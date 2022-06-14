@@ -80,6 +80,7 @@
                                 @php
                                 session([
                                     'discount'=>$discount,
+                                    'type'=>$type,
                                 ])
                             @endphp
                                 <ul class="btns_group ul_li_right">
