@@ -15,8 +15,7 @@ class ProductController extends Controller
 {
     //
 
-    function add_product()
-    {
+    function add_product(){
         $categories = Category::all();
         $subcategories = Subcategory::all();
         $products = Product::all();
@@ -41,8 +40,7 @@ class ProductController extends Controller
         echo $str;
     }
 
-    function store(Request $request)
-    {
+    function store(Request $request){
         $after_discount = round($request->product_price - ($request->product_price * $request->discount / 100));
 
         $request->validate([

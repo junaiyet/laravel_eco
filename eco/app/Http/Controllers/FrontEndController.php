@@ -37,7 +37,7 @@ class FrontEndController extends Controller
     function getsize(Request $request){
 
         $sizes = Inventory::where('product_id', $request->product_id)->where('color_id', $request->color_id)->get();
-        $str = '<option>Choose A Option</option>';
+        $str = '<option value="">Choose A Option</option>';
         foreach($sizes as $size){
             $str .= '<option value=" '.$size->size_id.' ">'.$size->rel_to_size->size_name.'</option>';
         }

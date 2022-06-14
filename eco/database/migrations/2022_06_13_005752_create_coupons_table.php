@@ -19,8 +19,8 @@ class CreateCouponsTable extends Migration
             $table->integer('type');
             $table->integer('amount');
             $table->date('validity');
-            $table->integer('max');
             $table->integer('min');
+            $table->integer('max')->nullable();
             $table->integer('status')->default(0);
             $table->timestamps();
         });

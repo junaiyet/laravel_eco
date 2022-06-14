@@ -18,11 +18,9 @@ class CartController extends Controller
         $request->validate([
             'color_id' => 'required',
             'size_id' => 'required',
-
-
         ]);
-    $quantity  =  Inventory::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->first()->quantity;
 
+    $quantity  =  Inventory::where('product_id', $request->product_id)->where('color_id', $request->color_id)->where('size_id', $request->size_id)->first()->quantity;
 
         if(Auth::guard('customerlogin')->check()){
             if($quantity > $request->quantity ){
@@ -81,14 +79,12 @@ class CartController extends Controller
                 $cart_total += $cart->rel_to_product->after_discount * $cart->quantity;
             }
 
-
             if (Coupon::where('coupon_name', $coupon_code)->where('status', 1)->exists()) {
                     if (Coupon::where('coupon_name', $coupon_code)->first()->validity > Carbon::today()) {
 
                         $min = Coupon::where('coupon_name', $coupon_code)->first()->min;
-                        $max = Coupon::where('coupon_name'  , $coupon_code)->first()->max;
 
-                        if ($cart_total > $min &&  $cart_total < $max) {
+                        if ($cart_total > $min) {
                             $discount = Coupon::where('coupon_name', $coupon_code)->first()->amount;
                             $type = Coupon::where('coupon_name', $coupon_code)->first()->type;
 
