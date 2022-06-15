@@ -106,3 +106,4 @@ Route::post('/coupon/store', [CouponController::class, 'coupon_store'])->name('c
 Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('/getCity', [CheckoutController::class, 'getCity']);
 Route::post('/order/store', [CheckoutController::class, 'order_store'])->name('order.store');
+Route::get('/order/success', [CheckoutController::class, 'order_success'])->name('order.success');

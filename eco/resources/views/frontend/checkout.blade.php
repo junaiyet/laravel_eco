@@ -50,7 +50,7 @@
                            <div class="clear"></div>
                            <p class="form-row form-row form-row-first address-field update_totals_on_change validate-required" id="billing_country_field">
                               <label for="billing_country" class="">Country <abbr class="required" title="required">*</abbr></label>
-                              <select name="country_id" id="country_id" autocomplete="country" class="country_to_state country_select ">
+                              <select name="country_id" id="country_id" autocomplete="country" class="country_to_state country_select " required>
                                  <option value="">Select a country&hellip;</option>
                                @foreach ($countries as $country)
 
@@ -61,7 +61,7 @@
                            </p>
                            <p class="form-row form-row form-row-last address-field update_totals_on_change validate-required" id="billing_country_field">
                               <label for="billing_country" class="">City <abbr class="required" title="required">*</abbr></label>
-                              <select name="city_id" id="city_id" autocomplete="country" class="country_to_state country_select ">
+                              <select name="city_id" id="city_id" autocomplete="country" class="country_to_state country_select " required>
                                  <option value="">Select a City&hellip;</option>
 
                               </select>

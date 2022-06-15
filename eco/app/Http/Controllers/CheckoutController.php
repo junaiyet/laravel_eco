@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Country;
 use App\Models\City;
+use App\Models\Order;
+use App\Models\BillingDetails;
+use App\Models\OrderProduct;
 use Auth;
 class CheckoutController extends Controller
 {
@@ -38,8 +41,59 @@ class CheckoutController extends Controller
     function order_store(Request $request){
 
 
-        print_r($request->all());
+       if($request->payment_method == 1){
+      $order_id =  Order::insertGetId([
+                'customer_id'=>Auth::guard('customerlogin')->id(),
+                'sub_total'=>$request->sub_total ,
+                'discount'=>$request->discount ,
+                'charge'=>$request->charge ,
+                'total'=>$request->total ,
+                'created_at'=> now(),
 
+               ]);
+               BillingDetails::insert([
+                'order_id'=>$order_id,
+                'customer_id'=>Auth::guard('customerlogin')->id(),
+                'name'=>$request->name,
+                'email'=>$request->email,
+                'phone'=>$request->phone,
+                'company'=>$request->company,
+                'country_id'=>$request->country_id,
+                'city_id'=>$request->city_id,
+                'address'=>$request->address,
+                'notes'=>$request->notes,
+                'created_at'=> now(),
+
+               ]);
+
+               $carts = Cart::where('customer_id', Auth::guard('customerlogin')->id())->get();
+               foreach($carts as $cart){
+
+                OrderProduct::insert([
+                    'customer_id'=>Auth::guard('customerlogin')->id(),
+                    'order_id'=>$order_id,
+                    'product_id'=>$cart->product_id,
+                    'color_id'=>$cart->color_id,
+                    'size_id'=>$cart->size_id,
+                    'price'=>$cart->rel_to_product->after_discount,
+                    'quantity'=>$cart->quantity,
+                    'created_at'=> now(),
+                ]);
+                
+
+               }
+
+
+                return redirect()->route('order.success')->with('success', $request->name);
+       }else if($request->payment_method == 2){
+       echo "ssl";
+       }else{
+        echo "stripe";
+       }
+
+    }
+    function order_success(){
+        return view('order_success');
     }
 
 }
