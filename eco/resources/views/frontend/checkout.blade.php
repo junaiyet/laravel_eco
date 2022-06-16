@@ -79,7 +79,11 @@
                   </div>
                   <h3 id="order_review_heading">Your order</h3>
                   <div id="order_review" class="woocommerce-checkout-review-order">
-                     <table class="shop_table woocommerce-checkout-review-order-table">
+                    @php
+                    $type = session('type');
+                    $discount = session('discount');
+                    @endphp
+                    <table class="shop_table woocommerce-checkout-review-order-table">
                            <tr class="cart-subtotal">
                               <th>Subtotal</th>
                               <input type="hidden" value="{{ $sub_total }}" name="sub_total">
@@ -88,8 +92,8 @@
                            </tr>
                            <tr class="cart-subtotal">
                               <th>Discount</th>
-                              <input type="hidden" value="{{ $sub_total*session('discount')/100 }} " name="discount">
-                              <td><span class="woocommerce-Price-amount amount">{{ session('discount')}}  {{session('type') == 1?'%': 'BDT'}}</span>
+                              <input type="hidden" value="{{ $sub_total* $discount/100 }} " name="discount">
+                              <td><span class="woocommerce-Price-amount amount">{{  $discount}}  {{ $type == 1?'%': 'BDT'}}</span>
                               </td>
                            </tr>
                            <tr class="shipping">
@@ -103,8 +107,8 @@
 
                            <tr class="order-total">
                               <th>Total</th>
-                              <input type="hidden" id="total2" name="total" value="{{ (session('type') == 1? $sub_total - ($sub_total*session('discount'))/100:$sub_total->session('discount')) }}">
-                              <td><strong>BDT<span class="amount total">{{ (session('type') == 1? $sub_total - ($sub_total*session('discount'))/100:$sub_total->session('discount')) }} </span></strong>  </td>
+                              <input type="hidden" id="total2" name="total" value="{{ ($type == 1? $sub_total - ($sub_total*$discount)/100:$sub_total-$discount) }}">
+                              <td><strong>BDT<span class="amount total">{{ ($type == 1? $sub_total - ($sub_total*$discount)/100:$sub_total-$discount) }} </span></strong>  </td>
                            </tr>
                      </table>
                      <div id="payment" class="woocommerce-checkout-payment py-3 mt-5">
@@ -181,7 +185,7 @@ $('#country_id').change(function(){
 })
 $('.charge').click(function(){
     var charge = $(this).val();
-    var total = {{ (session('type') == 1? $sub_total - ($sub_total*session('discount'))/100:$sub_total->session('discount')) }} ;
+    var total = {{ (session('type') == 1? $sub_total - ($sub_total*session('discount'))/100:$sub_total-session('discount')) }} ;
     var total_price = parseInt(total)+parseInt(charge);
     $('.total').html(total_price)
     $('#total2').val(total_price)

@@ -79,7 +79,7 @@
                             <div class="col col-lg-6">
                                 @php
                                 session([
-                                    'discount'=>$discount,
+                                   'discount'=>$discount,
                                     'type'=>$type,
                                 ])
                             @endphp
@@ -89,6 +89,7 @@
                                 </ul>
                                 </form>
                             </div>
+
                             <div class="col col-lg-6">
                                 @if ($message)
                                     <div class="alert alert-danger">{{$message}}</div>
@@ -137,8 +138,6 @@
             ================================================== -->
 
 @endsection
-
-
 
 @section('footer_script')
 

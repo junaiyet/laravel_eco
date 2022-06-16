@@ -9,7 +9,12 @@ use App\Models\City;
 use App\Models\Order;
 use App\Models\BillingDetails;
 use App\Models\OrderProduct;
+use App\Models\Inventory;
+use App\Mail\InvoiceSend;
+use Mail;
 use Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+
 class CheckoutController extends Controller
 {
     //\
@@ -79,11 +84,15 @@ class CheckoutController extends Controller
                     'quantity'=>$cart->quantity,
                     'created_at'=> now(),
                 ]);
-                
+                // Inventory::where('product_id',$cart->product_id)->where('color_id',$cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity',$cart->quantity);
 
                }
 
+                       Mail::to($request->email)->send(new InvoiceSend($order_id));
+                // return view('invoice.invoice');
 
+
+            //    Cart::where('customer_id',Auth::guard('customerlogin')->id())->delete();
                 return redirect()->route('order.success')->with('success', $request->name);
        }else if($request->payment_method == 2){
        echo "ssl";
