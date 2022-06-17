@@ -101,7 +101,7 @@
                         <div class="col col-lg-3 col-md-3 col-sm-12">
                             <div class="brand_logo">
                                 <a class="brand_link" href="index.html">
-                                    <img src="{{asset('frontend/images/logo/logo_1x.png')}}" srcset="assets/images/logo/logo_2x.png')}}" alt>
+                                    <img src="{{asset('frontend/images/logo/logo.png')}}" alt>
                                 </a>
                             </div>
                         </div>
@@ -200,7 +200,7 @@
                                         {{ Auth::guard('customerlogin')->user()->name }}
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
-                                      <li><a class="dropdown-item active" href="#">My Account</a></li>
+                                      <li><a class="dropdown-item active" href="{{route('account')}}">My Account</a></li>
                                       <li><a class="dropdown-item" href="{{ route('customer.logout') }}">LogOut</a></li>
                                     </ul>
                                 </div>
@@ -424,7 +424,7 @@
                             <div class="footer_widget footer_about">
                                 <div class="brand_logo">
                                     <a class="brand_link" href="index.html">
-                                        <img src="{{asset('frontend/images/logo/logo_1x.png')}}" alt="logo_not_found">
+                                        <img src="{{asset('frontend/images/logo/logo.png')}}" alt="logo_not_found">
                                     </a>
                                 </div>
                                 <ul class="social_round ul_li">

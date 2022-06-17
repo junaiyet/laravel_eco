@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 	<head>
@@ -107,13 +109,13 @@
 						<table>
 							<tr>
 								<td class="title">
-									<img src="https://i.postimg.cc/DZTTjwwL/2560px-Valorant-logo-pink-color-version-svg.png" style="width: 100%; max-width: 200px" />
+									<img src="https://i.postimg.cc/jqM5f106/logo-1x.png" style="width: 100%; max-width: 200px" />
 								</td>
 
 								<td>
-									Invoice #: 123<br />
-									Created: January 1, 2015<br />
-									Due: February 1, 2015
+									Invoice #: {{$order_id}}<br />
+									Created: {{ App\Models\Order::where('id',$order_id)->first()->created_at->format('d-M-Y') }}<br />
+									{{-- Due: February 1, 2015 --}}
 								</td>
 							</tr>
 						</table>
@@ -124,16 +126,15 @@
 					<td colspan="4">
 						<table>
 							<tr>
-								<td>
-									Sparksuite, Inc.<br />
-									12345 Sunny Road<br />
+								<td style="width: 200px;">
+                                    {{ App\Models\BillingDetails::where('order_id',$order_id)->first()->address }}
 
 								</td>
 
 								<td>
-									Acme Corp.<br />
-									John Doe<br />
-									john@example.com
+                                    {{ App\Models\BillingDetails::where('order_id',$order_id)->first()->company }}<br />
+                                    {{ App\Models\BillingDetails::where('order_id',$order_id)->first()->name }}<br />
+                                    {{ App\Models\BillingDetails::where('order_id',$order_id)->first()->email }}
 								</td>
 							</tr>
 						</table>
@@ -150,41 +151,49 @@
 
 					<td>Sub Total</td>
 				</tr>
+                @php
+                    $sub_total = 0 ;
+                @endphp
+          @foreach ( App\Models\OrderProduct::where('order_id', $order_id)->get() as $order)
 
-				<tr class="item" style="text-align:left">
-					<td style="text-align:left">Website </td>
-					<td style="text-align:left">Website design</td>
-					<td style="text-align:left"> Website design design</td>
+          <tr class="item" style="text-align:left">
+            <td style="text-align:left">{{$order->rel_to_product->product_name}} </td>
+            <td style="text-align:left">{{$order->price}}</td>
+            <td style="text-align:left"> {{$order->quantity}}</td>
 
-					<td>$300.00</td>
-				</tr>
+            <td>{{$order->price * $order->quantity}}</td>
+        </tr>
+        @php
+        $sub_total +=$order->price * $order->quantity ;
+    @endphp
+        @endforeach
 				<tr class="total" style="text-align:left">
 					<td></td>
 					<td></td>
 					<td style="text-align:center">Sub Total</td>
 
-					<td style="font-weight: bold;">$300.00</td>
+					<td style="font-weight: bold;">{{ $sub_total}}</td>
 				</tr>
 				<tr class="total" style="text-align:left">
 					<td></td>
 					<td></td>
 					<td style="text-align:center">Discount</td>
 
-					<td style="font-weight: bold;">$300.00</td>
+					<td style="font-weight: bold;"> {{ App\Models\Order::where('id',$order_id)->first()->discount }}</td>
 				</tr>
 				<tr class="total" style="text-align:left">
 					<td></td>
 					<td></td>
 					<td style="text-align:center">Charge</td>
 
-					<td style="font-weight: bold;">$300.00</td>
+					<td style="font-weight: bold;"> {{ App\Models\Order::where('id',$order_id)->first()->charge }}</td>
 				</tr>
 				<tr class="total" style="text-align:left">
 					<td></td>
 					<td></td>
 					<td style="text-align:center">Grand Total</td>
 
-					<td style="font-weight: bold;">$300.00</td>
+					<td style="font-weight: bold;"> {{ App\Models\Order::where('id',$order_id)->first()->total }}</td>
 				</tr>
 
 			</table>

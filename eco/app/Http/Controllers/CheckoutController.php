@@ -84,15 +84,33 @@ class CheckoutController extends Controller
                     'quantity'=>$cart->quantity,
                     'created_at'=> now(),
                 ]);
-                // Inventory::where('product_id',$cart->product_id)->where('color_id',$cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity',$cart->quantity);
+                Inventory::where('product_id',$cart->product_id)->where('color_id',$cart->color_id)->where('size_id', $cart->size_id)->decrement('quantity',$cart->quantity);
+
 
                }
-
+            //    SMS SEND
+                            $url = "http://66.45.237.70/api.php";
+                                $number=$request->phone;
+                                $text="Thank You for Purchasing Our Product, Your Total Amount :$request->total ";
+                                $data= array(
+                                'username'=>"junaiyet",
+                                'password'=>"DFVBGM7K",
+                                'number'=>"$number",
+                                'message'=>"$text"
+                                );
+                                $ch = curl_init(); // Initialize cURL
+                                curl_setopt($ch, CURLOPT_URL,$url);
+                                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+                                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                $smsresult = curl_exec($ch);
+                                $p = explode("|",$smsresult);
+                                $sendstatus = $p[0];
+                          //INVOICE
                        Mail::to($request->email)->send(new InvoiceSend($order_id));
                 // return view('invoice.invoice');
 
 
-            //    Cart::where('customer_id',Auth::guard('customerlogin')->id())->delete();
+               Cart::where('customer_id',Auth::guard('customerlogin')->id())->delete();
                 return redirect()->route('order.success')->with('success', $request->name);
        }else if($request->payment_method == 2){
        echo "ssl";

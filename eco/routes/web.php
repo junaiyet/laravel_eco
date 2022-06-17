@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -107,3 +108,7 @@ Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout
 Route::post('/getCity', [CheckoutController::class, 'getCity']);
 Route::post('/order/store', [CheckoutController::class, 'order_store'])->name('order.store');
 Route::get('/order/success', [CheckoutController::class, 'order_success'])->name('order.success');
+
+//invoice
+Route::get('account',[AccountController::class,'account'])->name('account');
+Route::get('invoice/download/{order_id}',[AccountController::class,'invoice_download'])->name('invoice.download');

@@ -16,9 +16,11 @@ class InvoiceSend extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $data;
+    public function __construct($data)
     {
         //
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +30,8 @@ class InvoiceSend extends Mailable
      */
     public function build()
     {
-        return $this->view('invoice.invoice');
+        return $this->view('invoice.invoice',[
+            'order_id'=> $this->data,
+        ]);
     }
 }
