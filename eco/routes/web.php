@@ -18,6 +18,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SslCommerzPaymentController;
 use Faker\Guesser\Name;
 
 Auth::routes();
@@ -112,3 +113,19 @@ Route::get('/order/success', [CheckoutController::class, 'order_success'])->name
 //invoice
 Route::get('account',[AccountController::class,'account'])->name('account');
 Route::get('invoice/download/{order_id}',[AccountController::class,'invoice_download'])->name('invoice.download');
+
+
+
+// SSLCOMMERZ Start
+
+Route::get('/ssl/payment', [SslCommerzPaymentController::class, 'ssl_payment']);
+
+Route::post('/pay', [SslCommerzPaymentController::class, 'index']);
+Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
+
+Route::post('/success', [SslCommerzPaymentController::class, 'success']);
+Route::post('/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::post('/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END

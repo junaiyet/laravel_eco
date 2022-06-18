@@ -113,7 +113,10 @@ class CheckoutController extends Controller
                Cart::where('customer_id',Auth::guard('customerlogin')->id())->delete();
                 return redirect()->route('order.success')->with('success', $request->name);
        }else if($request->payment_method == 2){
-       echo "ssl";
+
+           return view('ssl_payment',[
+            'data'=>  $request->all(),
+           ]);
        }else{
         echo "stripe";
        }
